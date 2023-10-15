@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+
+  # Django сервер
+  django:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    depends_on:
+      - redis
+
+  # Сelery worker
+  celery_worker:
+    build: .
+    volumes:
+      - .:/app
+    command: ["celery", "-A", "FactoryApp", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+
+  # Celery beat
+  celery_beat:
+    build: .
+    volumes:
+      - .:/app
+    command: ["celery", "-A", "FactoryApp", "beat", "--loglevel=info"]
+    depends_on:
+      - redis
+
+  # Бот
+  bot:
+    build: .
+    volumes:
+      - .:/app
+    command: ["python", "manage.py", "runbot.py"]
+    depends_on:
+      - redis
+
+  # Redis сервер
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
