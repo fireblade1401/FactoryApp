@@ -2,14 +2,24 @@ version: '3'
 
 services:
 
+  # Nginx
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - django
+
   # Django сервер
   django:
     build: .
-    ports:
-      - "8000:8000"
     volumes:
       - .:/app
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    expose:
+      - "8000"
     depends_on:
       - redis
 
@@ -43,5 +53,5 @@ services:
   # Redis сервер
   redis:
     image: "redis:alpine"
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
