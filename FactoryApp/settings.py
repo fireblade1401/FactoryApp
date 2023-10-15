@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'FactoryApp.wsgi.application'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
     'fetch_telegram_updates_every_minute': {

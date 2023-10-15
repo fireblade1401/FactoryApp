@@ -36,7 +36,7 @@ services:
     build: .
     volumes:
       - .:/app
-    command: ["python", "manage.py", "runbot.py"]
+    command: ["python", "manage.py", "runbot"]
     depends_on:
       - redis
 
